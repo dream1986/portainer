@@ -119,6 +119,7 @@ type (
 		ImageCount              int               `json:"ImageCount"`
 		ServiceCount            int               `json:"ServiceCount"`
 		StackCount              int               `json:"StackCount"`
+		NodeCount               int               `json:"NodeCount"`
 		SnapshotRaw             DockerSnapshotRaw `json:"DockerSnapshotRaw"`
 	}
 
@@ -378,6 +379,12 @@ type (
 		ProjectPath string `json:"ProjectPath"`
 	}
 
+	// QuayRegistryData represents data required for Quay registry to work
+	QuayRegistryData struct {
+		UseOrganisation   bool   `json:"UseOrganisation"`
+		OrganisationName  string `json:"OrganisationName"`
+	}
+
 	// JobType represents a job type
 	JobType int
 
@@ -507,6 +514,7 @@ type (
 		Password                string                           `json:"Password,omitempty" example:"registry_password"`
 		ManagementConfiguration *RegistryManagementConfiguration `json:"ManagementConfiguration"`
 		Gitlab                  GitlabRegistryData               `json:"Gitlab"`
+		Quay                    QuayRegistryData                 `json:"Quay"`
 		UserAccessPolicies      UserAccessPolicies               `json:"UserAccessPolicies"`
 		TeamAccessPolicies      TeamAccessPolicies               `json:"TeamAccessPolicies"`
 
@@ -965,6 +973,7 @@ type (
 	// ComposeStackManager represents a service to manage Compose stacks
 	ComposeStackManager interface {
 		ComposeSyntaxMaxVersion() string
+		NormalizeStackName(name string) string
 		Up(stack *Stack, endpoint *Endpoint) error
 		Down(stack *Stack, endpoint *Endpoint) error
 	}
